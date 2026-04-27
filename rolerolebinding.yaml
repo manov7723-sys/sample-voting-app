@@ -16,7 +16,7 @@ metadata:
   namespace: dev
 subjects:
 - kind: User
-  name: "arn:aws:iam::123456789012:user/dev-user"
+  name: dev-user
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role

@@ -3,8 +3,6 @@ kind: Deployment
 metadata:
   name: worker
   namespace: dev
-  labels:
-    app: worker
 spec:
   replicas: 1
   selector:
@@ -18,16 +16,8 @@ spec:
       containers:
         - name: worker
           image: dockersamples/examplevotingapp_worker
-          imagePullPolicy: Always
           env:
-            - name: REDIS_HOST
+            - name: REDIS
               value: redis
-            - name: DB_HOST
+            - name: DB
               value: db
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "256Mi"

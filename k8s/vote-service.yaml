@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: vote
   labels:
-    app: result
-  name: result
+    app: vote
+  namespace: dev
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
-    app: result
+    app: vote
   ports:
-    - name: result-service
+    - name: vote-service
       port: 80
       targetPort: 80

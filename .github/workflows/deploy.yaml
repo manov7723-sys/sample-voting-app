@@ -32,4 +32,9 @@ jobs:
           kubectl apply -f k8s/
 
       - name: Verify rollout
-        run: kubectl rollout status deployment --all -n dev
+        run: |
+          kubectl rollout status deployment/db -n dev
+          kubectl rollout status deployment/redis -n dev
+          kubectl rollout status deployment/result -n dev
+          kubectl rollout status deployment/vote -n dev
+          kubectl rollout status deployment/worker -n dev

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: kube-system
+  labels:
+    app: fluentd
+spec:
+  selector:
+    matchLabels:
+      app: fluentd
+  template:
+    metadata:
+      labels:
+        app: fluentd
+    spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+
+      containers:
+        - name: fluentd
+          image: fluent/fluentd:v1.16-1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              memory: 200Mi
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: containerlogs
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+
+      volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: containerlogs
+          hostPath:
+            path: /var/lib/docker/containers

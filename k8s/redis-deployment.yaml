@@ -4,7 +4,9 @@ metadata:
   name: redis
   namespace: dev
 spec:
-  serviceName: redis  
+  serviceName: redis 
+  securityContext:
+        fsGroup: 1000
   replicas: 1
   selector:
     matchLabels:

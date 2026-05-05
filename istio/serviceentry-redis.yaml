@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: redis-external
+  namespace: dev
+spec:
+  hosts:
+    - redis.dev.svc.cluster.local
+  location: MESH_INTERNAL
+  resolution: DNS
+  ports:
+    - number: 6379
+      name: tcp-redis
+      protocol: TCP

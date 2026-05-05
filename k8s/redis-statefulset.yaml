@@ -4,7 +4,8 @@ metadata:
   name: redis
   namespace: dev
 spec:
-  serviceName: redis  
+  serviceName: redis
+  replicas: 1
   selector:
     matchLabels:
       app: redis
@@ -13,6 +14,8 @@ spec:
       labels:
         app: redis
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
         - name: redis
           image: redis:alpine
@@ -22,13 +25,12 @@ spec:
           volumeMounts:
             - name: redis-data
               mountPath: /data
-
   volumeClaimTemplates:
     - metadata:
         name: redis-data
       spec:
-        storageClassName: gp2 
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: 1Gi

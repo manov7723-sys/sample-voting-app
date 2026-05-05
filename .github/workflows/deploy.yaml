@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials (OIDC)
@@ -27,18 +27,39 @@ jobs:
         run: |
           aws eks update-kubeconfig --region us-east-1 --name web-app
 
+      # Optional but good practice
+      - name: Validate manifests (dry run)
+        run: |
+          kubectl apply --dry-run=client -f k8s/
+
       - name: Deploy DaemonSet
         run: |
           kubectl apply -f k8s/daemonset/
 
-      - name: Deploy
+      - name: Deploy Application Manifests
         run: |
           kubectl apply -f k8s/
 
-      - name: Verify rollout
+      # -------------------------------
+      # Rollout verification (FIXED)
+      # -------------------------------
+      - name: Verify Deployment Rollouts
         run: |
-          kubectl rollout status deployment/db -n dev
-          kubectl rollout status deployment/redis -n dev
-          kubectl rollout status deployment/result -n dev
-          kubectl rollout status deployment/vote -n dev
-          kubectl rollout status deployment/worker -n dev
+          kubectl rollout status deployment/db -n dev --timeout=180s
+          kubectl rollout status deployment/vote -n dev --timeout=180s
+          kubectl rollout status deployment/result -n dev --timeout=180s
+          kubectl rollout status deployment/worker -n dev --timeout=180s
+
+      - name: Verify StatefulSets
+        run: |
+          kubectl rollout status statefulset/redis -n dev --timeout=180s
+
+      # Final health check (best practice)
+      - name: Verify all pods are running
+        run: |
+          kubectl get pods -n dev
+          kubectl wait --for=condition=Ready pods --all -n dev --timeout=180s
+
+      - name: Show cluster state
+        run: |
+          kubectl get all -n dev

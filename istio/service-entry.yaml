@@ -5,10 +5,14 @@ metadata:
   namespace: dev
 spec:
   hosts:
-    - redis.dev.svc.cluster.local
+    - redis
   location: MESH_INTERNAL
-  resolution: DNS
+  resolution: STATIC
   ports:
     - number: 6379
       name: tcp-redis
       protocol: TCP
+  endpoints:
+    - address: 10.1.12.92
+      ports:
+        tcp-redis: 6379

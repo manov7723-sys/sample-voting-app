@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: db-cluster-b
+  namespace: dev
+spec:
+  hosts:
+    - db.dev.svc.cluster.local
+  location: MESH_INTERNAL
+  resolution: DNS
+  ports:
+    - number: 5432
+      name: tcp-db
+      protocol: TCP
+  endpoints:
+    - address: db.dev.svc.cluster.local

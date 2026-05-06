@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: ServiceEntry
 metadata:
-  name: redis-external
+  name: redis-cluster-b
   namespace: dev
 spec:
   hosts:
@@ -12,3 +12,5 @@ spec:
     - number: 6379
       name: tcp-redis
       protocol: TCP
+  endpoints:
+    - address: redis.dev.svc.cluster.local

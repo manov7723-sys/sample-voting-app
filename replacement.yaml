@@ -1,0 +1,10 @@
+# This is a comment
+person:
+  name: "John Doe"
+  age: 30
+  city: "New York"
+  is_employed: true
+  skills:
+    - "YAML"
+    - "Python"
+    - "DevOps"

@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: voting-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/manov7723-sys/sample-voting-app.git
+    targetRevision: main
+    path: k8s/
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -4,7 +4,6 @@ metadata:
   name: db
   namespace: dev
 spec:
-  clusterIP: None
   ports:
     - name: db-service
       port: 5432

@@ -16,4 +16,8 @@ spec:
       containers:
         - name: worker
           image: dockersamples/examplevotingapp_worker
-          
+          env:
+            - name: REDIS_HOST
+              value: redis
+            - name: DB_HOST
+              value: db

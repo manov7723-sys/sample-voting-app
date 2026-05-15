@@ -6,7 +6,6 @@ metadata:
   labels:
     app: redis
 spec:
-  clusterIP: None
   selector:
     app: redis
   ports:

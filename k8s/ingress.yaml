@@ -1,25 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: voting-app-ingress
+  name: voting-ingress
   namespace: dev
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
   rules:
   - http:
       paths:
-      - path: /vote(/|$)(.*)
-        pathType: ImplementationSpecific
+      - path: /vote
+        pathType: Prefix
         backend:
           service:
             name: vote
             port:
               number: 80
-      - path: /result(/|$)(.*)
-        pathType: ImplementationSpecific
+      - path: /result
+        pathType: Prefix
         backend:
           service:
             name: result

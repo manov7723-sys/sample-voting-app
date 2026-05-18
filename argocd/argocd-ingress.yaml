@@ -1,27 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: voting-app-ingress
-  namespace: dev
+  name: argocd-ingress
+  namespace: argocd
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"  # ← HTTPS because port 443
 spec:
   ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /vote(/|$)(.*)
+      - path: /argocd(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
           service:
-            name: vote
+            name: argocd-server
             port:
-              number: 80
-      - path: /result(/|$)(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: result
-            port:
-              number: 80
+              number: 443        # ← match your service port

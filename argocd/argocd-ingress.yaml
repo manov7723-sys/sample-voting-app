@@ -7,13 +7,19 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+
+    # IMPORTANT for ArgoCD HTTPS service
     alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+
+    # Optional but recommended for stability
+    alb.ingress.kubernetes.io/success-codes: "200-399"
 spec:
   ingressClassName: alb
   rules:
   - http:
       paths:
-      - path: /argocd
+      - path: /
         pathType: Prefix
         backend:
           service:

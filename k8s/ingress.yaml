@@ -7,26 +7,24 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
-
-    # IMPORTANT: improves ALB health checks
     alb.ingress.kubernetes.io/success-codes: "200-399"
-
-    # OPTIONAL (recommended if apps behave slowly)
-    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTP": 8080}]'   # ← two ports
 spec:
   ingressClassName: alb
   rules:
   - http:
       paths:
-      - path: /vote
+      - path: /                  # port 80 → vote
         pathType: Prefix
         backend:
           service:
             name: vote
             port:
               number: 80
-
-      - path: /result
+  - http:
+      paths:
+      - path: /                  # port 8080 → result
         pathType: Prefix
         backend:
           service:
